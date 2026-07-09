@@ -1,0 +1,16 @@
+name: smoke
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install matplotlib
+      - run: python plots/plot_crossover.py results/gemma4_e2b_crossover.csv /tmp/out.png
+      - run: python benchmark/bench_forward.py --help

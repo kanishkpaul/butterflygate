@@ -1,5 +1,6 @@
 # butterflygate
 
+[![smoke](https://github.com/kanishkpaul/butterflygate/actions/workflows/ci.yml/badge.svg)](https://github.com/kanishkpaul/butterflygate/actions/workflows/ci.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **A sub-quadratic, hardware-parallel replacement for transformer self-attention
