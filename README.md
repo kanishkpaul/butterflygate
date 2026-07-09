@@ -1,7 +1,16 @@
 # butterflygate
 
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 **A sub-quadratic, hardware-parallel replacement for transformer self-attention
 — and an honest benchmark of where it wins and where it doesn't.**
+
+> Part of a research series — see also
+> [register-obstruction](https://github.com/kanishkpaul/register-obstruction) and
+> [arc-agi3-world-models](https://github.com/kanishkpaul/arc-agi3-world-models) ·
+> write-ups at [kanishkpaul.com/research](https://kanishkpaul.com/research)
+
+![Throughput ratio vs sequence length](plots/crossover.png)
 
 ButterflyGate replaces dense O(n²) self-attention with a **structured
 token-mixing network** whose cost grows as **O(n log n)** rather than O(n²) — so
@@ -42,9 +51,10 @@ stays ahead through the longest successful probe (14,336)**:
 | 14336   | 3,115.8  | 3,787.8  | **1.22×** | BG faster |
 
 On `Llama-3.2-1B` (fresh-restart limit sweep) the forward pass **succeeds out to
-32,768 tokens**, BG faster at every length (3.54× at 512 → 1.15× at 32k). Full
-tables incl. perplexity/accuracy (which show the untrained-gate collapse
-honestly) are in `results/`.
+32,768 tokens**, BG faster at every length (3.54× at 512 → 1.15× at 32k). The
+timing data is in [`results/`](results/) and the figure above is generated from
+it. (Next-token accuracy of the untrained gate collapses — that's expected and
+noted below; those columns are omitted here so the preview stays speed-only.)
 
 ## Why it matters
 
@@ -57,21 +67,30 @@ model weights, not a toy microbenchmark.
 The obvious next step (and the reason the accuracy columns look the way they do):
 **train** the gate rather than dropping it in cold. That's ongoing.
 
-## Setup
+## Benchmark harness
 
-The benchmark runs forward-only on a single GPU via HuggingFace Transformers on
-real model weights and Dolma text (`bf16`, batch size 1). Implementation,
-harness, and full result artifacts are available on request for evaluation
-under a conversation / NDA — omitted here for publication priority, not because
-they don't exist.
+The **mechanism-agnostic** benchmark harness is included:
+[`benchmark/bench_forward.py`](benchmark/bench_forward.py) times the forward pass
+of *any* token-mixing `nn.Module` across a sequence-length sweep (warmup, `bf16`,
+peak-VRAM tracking). It knows nothing about ButterflyGate — you hand it a module
+factory and it reports tokens/second. Regenerate the figure from the shipped
+timings with no GPU:
+
+```bash
+pip install matplotlib
+python plots/plot_crossover.py results/gemma4_e2b_crossover.csv plots/crossover.png
+```
+
+Methodology (protocol, models, limit procedure, caveats):
+[`docs/methodology.md`](docs/methodology.md).
 
 ## What's public vs. withheld
 
 | Public here | Withheld until publication |
 |---|---|
-| The efficiency result (crossover + long-context speedups, real weights) | The exchange architecture + gate parametrization |
-| Honest untrained-gate caveat (accuracy collapse) | The training recipe |
-| Setup shape (forward-only, models, dataset) | Implementation, benchmark harness, raw run logs |
+| The efficiency result — timing CSVs + the crossover figure | The exchange architecture + gate parametrization |
+| The mechanism-agnostic benchmark harness | The ButterflyGate `nn.Module` itself |
+| Methodology + honest untrained-gate caveat | The training recipe + raw deployment logs |
 
 If you're evaluating this for a role, I'm glad to walk through the full method
 and numbers directly.

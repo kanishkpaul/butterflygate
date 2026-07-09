@@ -9,3 +9,7 @@ __pycache__/
 .venv/
 # os
 .DS_Store
+
+.venv/
+__pycache__/
+*.pyc
