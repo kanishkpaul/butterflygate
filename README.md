@@ -68,9 +68,11 @@ length measured.
 
 **Don't trust the 512-token Gemma row.** Baseline throughput jumps 5.5× from
 512 to 1,024 tokens (2,359 → 13,095 tok/s), then falls steadily at every
-longer length. That jump is out of line with the rest of the curve and most
-likely caught warmup or launch overhead. Treat the 3.24× as unreliable until
-it's rerun.
+longer length. That jump is out of line with the rest of the curve, and the cause is in the
+runner: there were no warmup passes and baseline always ran first, so the
+512-token baseline was the first timed pass of the whole run and paid CUDA
+start-up costs. Treat the 3.24× as unreliable until it's rerun with warmup
+(see [methodology](docs/methodology.md)).
 
 **The advantage does not widen with length.** On Llama the ratio falls from
 3.54× to 1.15× as context grows. On Gemma it peaks at 1.35× (8,192) and settles
