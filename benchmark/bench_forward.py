@@ -2,9 +2,8 @@
 
 Times the forward pass of *any* token-mixing block (attention, a linear-time
 alternative, whatever) across a sweep of sequence lengths, with warmup, optional
-bf16, and peak-VRAM tracking. This is the harness used to measure ButterflyGate
-against baseline attention — it knows nothing about either; you hand it a module
-factory and it reports tokens/second.
+bf16, and peak-VRAM tracking. This utility is independent of the historical
+full-model measurements in results/. You supply a module factory and it reports tokens/second.
 
     python benchmark/bench_forward.py --lengths 512 1024 2048 4096
 

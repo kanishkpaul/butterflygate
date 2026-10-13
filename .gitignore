@@ -1,15 +1,8 @@
-# secrets / env
 .env
 .env.*
 *.key
 secure_logs/
-# python
 __pycache__/
 *.pyc
 .venv/
-# os
 .DS_Store
-
-.venv/
-__pycache__/
-*.pyc

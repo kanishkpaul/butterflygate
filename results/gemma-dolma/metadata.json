@@ -1,0 +1,14 @@
+{
+  "model": "google/gemma-4-E2B-it",
+  "dataset": "allenai/dolma:v1_6-sample",
+  "dataset_split": "streamed sample",
+  "run_date_utc": "2026-05-24",
+  "platform": "Hugging Face ZeroGPU",
+  "physical_accelerator": "not verified",
+  "mode": "forward-only evaluation",
+  "trained_replacement": false,
+  "warmup_passes": 0,
+  "independent_repetitions": "not available for every configuration",
+  "exact_document_ids": "not recorded in the released artifacts",
+  "variant_scope": "Anonymous labels are local to each experiment; they do not specify architecture."
+}

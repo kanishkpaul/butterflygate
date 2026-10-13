@@ -1,9 +1,9 @@
 cff-version: 1.2.0
-message: "If you reference this work, please cite it as below."
-title: "ButterflyGate: a sub-quadratic replacement for self-attention (efficiency benchmark)"
+message: "If you reference these measurements, cite the repository and the public commit used."
+title: "ButterflyGate: forward-evaluation results preview"
 authors:
   - family-names: Paul
     given-names: Kanishk
 repository-code: "https://github.com/kanishkpaul/butterflygate"
-url: "https://kanishkpaul.com/research"
+url: "https://github.com/kanishkpaul/butterflygate"
 license: MIT
